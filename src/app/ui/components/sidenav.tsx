@@ -8,7 +8,6 @@ import useUserStore from "@/store/userStore";
 
 const links = [
 	{ name: "Home", href: "/", icon: HomeIcon },
-	{ name: "Login", href: "/login", icon: KeyIcon },
 	{
 		name: "Create Item",
 		href: "/item/create",
@@ -21,7 +20,7 @@ export default function Sidenav() {
 	const path = usePathname();
 	const router = useRouter();
 	const userStore = useUserStore((state) => state);
-
+	console.log("PATH", path);
 	useEffect(() => {
 		if (!userStore.user) {
 			supabase.auth.getUser().then((user) => {
@@ -52,7 +51,7 @@ export default function Sidenav() {
 						</Link>
 					);
 				})}
-				{userStore.user && (
+				{userStore.user ? (
 					<button
 						onClick={() =>
 							supabase.auth.signOut().then(() => {
@@ -65,6 +64,17 @@ export default function Sidenav() {
 						{" "}
 						Log Out{" "}
 					</button>
+				) : (
+					<Link
+						key={"login"}
+						href={"/login"}
+						className={`flex gap-2 items-center bg-white hover:bg-sky-300 border-solid border-2 border-sky-300 p-2 rounded-lg ${
+							path === "/login" ? "bg-sky-300" : ""
+						}`}
+					>
+						<KeyIcon className="w-6" />
+						<p>Log in</p>
+					</Link>
 				)}
 			</div>
 		</div>
