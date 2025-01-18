@@ -1,7 +1,8 @@
-import { ItemProps } from "@/app/ui/components/item";
 import supabase from "@/app/utils/supabase";
-
-export default async function Item({ params }: { params: ItemProps }) {
+interface ItemProps {
+	params: Promise<{ id: string }>;
+}
+export default async function Item({ params }: ItemProps) {
 	const { id } = await params;
 	const { data: selectedItem } = await supabase
 		.from("products")
