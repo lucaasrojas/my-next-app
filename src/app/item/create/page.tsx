@@ -3,9 +3,18 @@
 import supabase from "@/app/utils/supabase";
 import { Formik } from "formik";
 import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 export default function CreateItem() {
     const route = useRouter()
+
+	useLayoutEffect(() => {
+		supabase.auth.onAuthStateChange((event, session) => {
+			if (session === null) {
+				route.push("/login");
+			}
+		});
+	})
 	return (
 		<>
 			<Formik
