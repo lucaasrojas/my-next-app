@@ -3,11 +3,12 @@ import supabase from "@/app/utils/supabase";
 
 export default async function Item({ params }: { params: IItem }) {
 	const { id } = await params;
-	const {data:selectedItem} = await supabase
+	const { data: selectedItem } = await supabase
 		.from("products")
 		.select()
-		.match({ id }).single();
-    
+		.match({ id })
+		.single();
+
 	return (
 		selectedItem && (
 			<div>

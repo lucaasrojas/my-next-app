@@ -24,10 +24,13 @@ export default function Sidenav() {
 
 	useEffect(() => {
 		if (!userStore.user) {
-			supabase.auth
-				.getUser()
-				.then((user) => userStore.setUser(user.data.user));
+			supabase.auth.getUser().then((user) => {
+				if (user.data.user) {
+					userStore.setUser(user?.data?.user);
+				}
+			});
 		}
+		// eslint-disable-next-line
 	}, [userStore.user]);
 
 	return (
@@ -52,12 +55,10 @@ export default function Sidenav() {
 				{userStore.user && (
 					<button
 						onClick={() =>
-							supabase.auth
-								.signOut()
-								.then(() => {
-									userStore.setUser(null);
-									router.replace('/')
-								})
+							supabase.auth.signOut().then(() => {
+								userStore.setUser(null);
+								router.replace("/");
+							})
 						}
 						className="flex gap-2 items-center bg-white hover:bg-sky-300 border-solid border-2 border-sky-300 p-2 rounded-lg"
 					>
