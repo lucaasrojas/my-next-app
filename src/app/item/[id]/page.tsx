@@ -1,12 +1,19 @@
-import { itemsToSell } from "@/app/lib/mockedData"
+import { Item as IItem } from "@/app/ui/components/item";
+import supabase from "@/app/utils/supabase";
 
-export default async function Item({params}: {params: {id: string}}) {
-    const { id } = await params
-    const item = itemsToSell.find((item) => item.id.toString() === id)
-    return item && (
-        <div>
-            <h1>{item.name}</h1>
-            <p>{item.description}</p>
-        </div>
-    )
+export default async function Item({ params }: { params: IItem }) {
+	const { id } = await params;
+	const {data:selectedItem} = await supabase
+		.from("products")
+		.select()
+		.match({ id }).single();
+    
+	return (
+		selectedItem && (
+			<div>
+				<h1>{selectedItem.title}</h1>
+				<p>{selectedItem.description}</p>
+			</div>
+		)
+	);
 }
