@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-export interface Item {
+export interface ItemProps {
 	title: string;
 	description: string;
 	price: number;
 	id: string | number;
 }
-export default function Item({ id, title, price }: Item) {
+export default function Item({ id, title, price }: ItemProps) {
 	const formatter = new Intl.NumberFormat("en-US", {
 		style: 'currency',
 		currency: 'USD',

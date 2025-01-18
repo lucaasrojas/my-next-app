@@ -1,7 +1,7 @@
-import { Item as IItem } from "@/app/ui/components/item";
+import { ItemProps } from "@/app/ui/components/item";
 import supabase from "@/app/utils/supabase";
 
-export default async function Item({ params }: { params: IItem }) {
+export default async function Item({ params }: { params: ItemProps }) {
 	const { id } = await params;
 	const { data: selectedItem } = await supabase
 		.from("products")
