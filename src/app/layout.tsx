@@ -29,10 +29,10 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen`}
 			>
 				<div className="flex h-full">
-					<div className="flex w-1/4">
+					<div className="flex w-1/6">
 						<Sidenav />
 					</div>
-					<main className="flex w-3/4">{children}</main>
+					<main className="flex w-5/6">{children}</main>
 				</div>
 			</body>
 		</html>

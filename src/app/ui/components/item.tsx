@@ -1,3 +1,4 @@
+import { priceFormatter } from "@/app/utils";
 import Image from "next/image";
 import Link from "next/link";
 export interface ItemProps {
@@ -7,23 +8,20 @@ export interface ItemProps {
 	id: string | number;
 }
 export default function Item({ id, title, price }: ItemProps) {
-	const formatter = new Intl.NumberFormat("en-US", {
-		style: 'currency',
-		currency: 'USD',
-	})
+
 	return (
 		
-			<div className="flex font-sans border-solid border-2 border-sky-500 rounded-lg w-full h-36 overflow-hidden">
-				<div className="flex-none w-1/3 relative">
+			<div className="flex font-sans shadow-lg rounded-lg w-full h-36 overflow-hidden">
+				<div className="flex-none w-1/4 relative">
 					<Image src={'https://picsum.photos/200'} alt="random picture" fill />
 				</div>
-				<div className="flex flex-col justify-between p-2 w-2/3">
+				<div className="flex flex-col justify-between p-2 w-3/4">
 					<div className="flex flex-col">
 						<h1 className="flex-auto text-md font-semibold text-slate-900">
 							{title}
 						</h1>
-						<div className="text-md font-semibold text-slate-500">
-							{formatter.format(price)}
+						<div className="text-md text-slate-500">
+							{priceFormatter.format(price)}
 						</div>
 					</div>
 

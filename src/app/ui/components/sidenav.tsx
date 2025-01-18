@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
 import { HomeIcon, KeyIcon } from "@heroicons/react/24/outline";
 import { usePathname, useRouter } from "next/navigation";
 import supabase from "@/app/utils/supabase";
 import { useEffect } from "react";
 import useUserStore from "@/store/userStore";
+import SideNavItem from "./SideNavItem";
 
 const links = [
 	{ name: "Home", href: "/", icon: HomeIcon },
@@ -20,7 +20,6 @@ export default function Sidenav() {
 	const path = usePathname();
 	const router = useRouter();
 	const userStore = useUserStore((state) => state);
-	console.log("PATH", path);
 	useEffect(() => {
 		if (!userStore.user) {
 			supabase.auth.getUser().then((user) => {
@@ -33,24 +32,9 @@ export default function Sidenav() {
 	}, [userStore.user]);
 
 	return (
-		<div className="flex w-full bg-sky-50 p-4">
-			<div className="flex grow flex-row md:flex-col gap-2 ">
-				{links.map((link) => {
-					const LinkIcon = link.icon;
-					if (link.role && link.role !== userStore.user?.aud) return;
-					return (
-						<Link
-							key={link.name}
-							href={link.href}
-							className={`flex gap-2 items-center bg-white hover:bg-sky-300 border-solid border-2 border-sky-300 p-2 rounded-lg ${
-								path === link.href ? "bg-sky-300" : ""
-							}`}
-						>
-							<LinkIcon className="w-6" />
-							<p>{link.name}</p>
-						</Link>
-					);
-				})}
+		<div className="flex w-full shadow-md">
+			<div className="flex grow flex-row md:flex-col gap-2 p-2">
+				{links.map((link) => <SideNavItem key={link.name} {...link} currentPath={path} show={link.role === "authenticated" ? !!userStore.user : true} />)}
 				{userStore.user ? (
 					<button
 						onClick={() =>
@@ -59,22 +43,18 @@ export default function Sidenav() {
 								router.replace("/");
 							})
 						}
-						className="flex gap-2 items-center bg-white hover:bg-sky-300 border-solid border-2 border-sky-300 p-2 rounded-lg"
+						className={`flex gap-2 items-center bg-white hover:border-solid hover:border-b-2 hover:border-slate-300  p-2 rounded-lg`}
 					>
 						{" "}
 						Log Out{" "}
 					</button>
 				) : (
-					<Link
-						key={"login"}
-						href={"/login"}
-						className={`flex gap-2 items-center bg-white hover:bg-sky-300 border-solid border-2 border-sky-300 p-2 rounded-lg ${
-							path === "/login" ? "bg-sky-300" : ""
-						}`}
-					>
-						<KeyIcon className="w-6" />
-						<p>Log in</p>
-					</Link>
+					<SideNavItem
+						name="Login"
+						href="/login"
+						currentPath={path}
+						icon={KeyIcon}
+					/>
 				)}
 			</div>
 		</div>
